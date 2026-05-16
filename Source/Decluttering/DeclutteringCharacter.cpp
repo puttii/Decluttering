@@ -63,7 +63,7 @@ void ADeclutteringCharacter::NotifyControllerChanged()
 
 	// Add Input Mapping Context
 	if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
-	{
+	{  
 		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
 		{
 			Subsystem->AddMappingContext(DefaultMappingContext, 0);
