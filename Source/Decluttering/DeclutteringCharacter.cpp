@@ -10,28 +10,46 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
+#include "Items/ItemsBase.h"
+#include "Kismet/GameplayStatics.h"
+#include "Player/MyPlayerState.h"
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
-//////////////////////////////////////////////////////////////////////////
-// ADeclutteringCharacter
+void ADeclutteringCharacter::BeginPlay()
+{
+	Super::BeginPlay();
+	MyPlayerState = Cast<AMyPlayerState>(GetPlayerState());
+	if (!MyPlayerState)
+	{
+		UE_LOG(LogTemp, Error, TEXT("Player state获取失败！！！"));
+	}
+	
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AItemsBase::StaticClass(), AllItems);
+	for (AActor* Actor : AllItems)
+	{
+		AItemsBase* Item = Cast<AItemsBase>(Actor);
+		if (Item)
+		{
+			// 给每个物品都绑定一次！
+			Item->OnKeepResult.AddDynamic(this, &ADeclutteringCharacter::OnKeepResultCome);
+			Item->OnSortResult.AddDynamic(this, &ADeclutteringCharacter::OnSortResultCome);
+			Item->OnDropResult.AddDynamic(this, &ADeclutteringCharacter::OnDropResultCome);
+		}
+	}
+}
 
 ADeclutteringCharacter::ADeclutteringCharacter()
 {
-	// Set size for collision capsule
 	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
 		
-	// Don't rotate when the controller rotates. Let that just affect the camera.
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationYaw = false;
 	bUseControllerRotationRoll = false;
 
-	// Configure character movement
-	GetCharacterMovement()->bOrientRotationToMovement = true; // Character moves in the direction of input...	
-	GetCharacterMovement()->RotationRate = FRotator(0.0f, 500.0f, 0.0f); // ...at this rotation rate
+	GetCharacterMovement()->bOrientRotationToMovement = true; 	
+	GetCharacterMovement()->RotationRate = FRotator(0.0f, 500.0f, 0.0f); 
 
-	// Note: For faster iteration times these variables, and many more, can be tweaked in the Character Blueprint
-	// instead of recompiling to adjust them
 	GetCharacterMovement()->JumpZVelocity = 700.f;
 	GetCharacterMovement()->AirControl = 0.35f;
 	GetCharacterMovement()->MaxWalkSpeed = 500.f;
@@ -39,29 +57,21 @@ ADeclutteringCharacter::ADeclutteringCharacter()
 	GetCharacterMovement()->BrakingDecelerationWalking = 2000.f;
 	GetCharacterMovement()->BrakingDecelerationFalling = 1500.0f;
 
-	// Create a camera boom (pulls in towards the player if there is a collision)
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
 	CameraBoom->SetupAttachment(RootComponent);
-	CameraBoom->TargetArmLength = 400.0f; // The camera follows at this distance behind the character	
-	CameraBoom->bUsePawnControlRotation = true; // Rotate the arm based on the controller
+	CameraBoom->TargetArmLength = 400.0f; 
+	CameraBoom->bUsePawnControlRotation = true; 
 
-	// Create a follow camera
 	FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
-	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName); // Attach the camera to the end of the boom and let the boom adjust to match the controller orientation
-	FollowCamera->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
+	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName); 
+	FollowCamera->bUsePawnControlRotation = false; 
 
-	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
-	// are set in the derived blueprint asset named ThirdPersonCharacter (to avoid direct content references in C++)
 }
-
-//////////////////////////////////////////////////////////////////////////
-// Input
 
 void ADeclutteringCharacter::NotifyControllerChanged()
 {
 	Super::NotifyControllerChanged();
 
-	// Add Input Mapping Context
 	if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
 	{  
 		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
@@ -73,17 +83,13 @@ void ADeclutteringCharacter::NotifyControllerChanged()
 
 void ADeclutteringCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
-	// Set up action bindings
 	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent)) {
 		
-		// Jumping
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &ACharacter::Jump);
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
 
-		// Moving
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ADeclutteringCharacter::Move);
 
-		// Looking
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ADeclutteringCharacter::Look);
 	}
 	else
@@ -92,24 +98,57 @@ void ADeclutteringCharacter::SetupPlayerInputComponent(UInputComponent* PlayerIn
 	}
 }
 
+void ADeclutteringCharacter::OnKeepResultCome(AItemsBase* Item, bool bCaught, int32 MoneyChanged)
+{
+	Money += MoneyChanged;
+	if (bCaught)
+	{
+		int NewCredit = MyPlayerState->GetCredit() - 10;
+		MyPlayerState->SetCredit(NewCredit);
+	}
+	//TODO: UI显示
+	ShowKeepResultUI(bCaught, MoneyChanged);
+}
+
+void ADeclutteringCharacter::OnSortResultCome(AItemsBase* Item, bool bWasCorrect, int32 MoneyChanged)
+{
+	ShowOperationDoneUI();
+	if (bWasCorrect)
+	{
+		Money += MoneyChanged;
+	}
+	else
+	{
+		Money = Money - 10 + MoneyChanged;
+	}
+}
+
+void ADeclutteringCharacter::OnDropResultCome(AItemsBase* Item, bool bWasCorrect, int32 MoneyChanged)
+{
+	ShowOperationDoneUI();
+	if (bWasCorrect)
+	{
+		Money += MoneyChanged;
+	}
+	else
+	{
+		Money = Money - 10 + MoneyChanged;
+	}
+}
+
 void ADeclutteringCharacter::Move(const FInputActionValue& Value)
 {
-	// input is a Vector2D
 	FVector2D MovementVector = Value.Get<FVector2D>();
 
 	if (Controller != nullptr)
 	{
-		// find out which way is forward
 		const FRotator Rotation = Controller->GetControlRotation();
 		const FRotator YawRotation(0, Rotation.Yaw, 0);
 
-		// get forward vector
 		const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
 	
-		// get right vector 
 		const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
 
-		// add movement 
 		AddMovementInput(ForwardDirection, MovementVector.Y);
 		AddMovementInput(RightDirection, MovementVector.X);
 	}
@@ -117,12 +156,10 @@ void ADeclutteringCharacter::Move(const FInputActionValue& Value)
 
 void ADeclutteringCharacter::Look(const FInputActionValue& Value)
 {
-	// input is a Vector2D
 	FVector2D LookAxisVector = Value.Get<FVector2D>();
 
 	if (Controller != nullptr)
 	{
-		// add yaw and pitch input to controller
 		AddControllerYawInput(LookAxisVector.X);
 		AddControllerPitchInput(LookAxisVector.Y);
 	}

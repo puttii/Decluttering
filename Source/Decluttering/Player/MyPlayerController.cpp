@@ -29,6 +29,8 @@ void AMyPlayerController::BeginPlay()
 	{
 		HUDWidget->AddToViewport();
 	}
+
+
 }
 
 void AMyPlayerController::TraceForItem()
@@ -57,26 +59,11 @@ void AMyPlayerController::TraceForItem()
 
 	if (ThisActor.IsValid())
 	{
-		/*if (UActorComponent* Highlightable = ThisActor->FindComponentByInterface(UInv_Highlightable::StaticClass()); IsValid(Highlightable))
-		{
-			IInv_Highlightable::Execute_Highlight(Highlightable);
-		}
-		
-		UInv_ItemComponent* ItemComponent = ThisActor->FindComponentByClass<UInv_ItemComponent>();
-		if (!IsValid(ItemComponent)) return;*/
 		FText Description = ThisActor->GetItemInfoText();
 		if (IsValid(HUDWidget))
 		{
 			
 			HUDWidget->ShowPickupMessage(Description);
 		} 
-	}
-
-	if (LastActor.IsValid())
-	{
-		/*if (UActorComponent* Highlightable = LastActor->FindComponentByInterface(UInv_Highlightable::StaticClass()); IsValid(Highlightable))
-		{
-			IInv_Highlightable::Execute_UnHighlight(Highlightable);
-		}*/
 	}
 }

@@ -18,5 +18,11 @@ public:
 	int TotalMoney = 0;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Data")
-	int Credit = 100;	
+	int Credit = 100;
+
+	void SetCredit(int InCredit){ Credit = InCredit; };
+	int GetCredit(){ return Credit; };
+
+	void SetTotalMoney(int InTotalMoney){ TotalMoney = InTotalMoney; };
+	int GetTotalMoney(){ return TotalMoney; };
 };

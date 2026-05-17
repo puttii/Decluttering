@@ -7,6 +7,7 @@
 #include "Logging/LogMacros.h"
 #include "DeclutteringCharacter.generated.h"
 
+class AMyPlayerState;
 class USpringArmComponent;
 class UCameraComponent;
 class UInputMappingContext;
@@ -21,6 +22,8 @@ class ADeclutteringCharacter : public ACharacter
 {
 	GENERATED_BODY()
 public:
+	virtual void BeginPlay() override;
+	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	USpringArmComponent* CameraBoom;
 
@@ -57,6 +60,15 @@ public:
 	// 有没有自己保留的东西
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Data")
 	bool hasKeep = false;
+
+	UFUNCTION(BlueprintCallable)
+	void OnKeepResultCome(AItemsBase* Item, bool bCaught, int32 MoneyChanged);
+
+	UFUNCTION(BlueprintCallable)
+	void OnSortResultCome(AItemsBase* Item, bool bWasCorrect, int32 MoneyChanged);
+
+	UFUNCTION(BlueprintCallable)
+	void OnDropResultCome(AItemsBase* Item, bool bWasCorrect, int32 MoneyChanged);
 protected:
 
 	void Move(const FInputActionValue& Value);
@@ -73,5 +85,17 @@ protected:
 public:
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
+
+	UPROPERTY()
+	TArray<AActor*> AllItems;
+
+	UPROPERTY()
+	AMyPlayerState* MyPlayerState = nullptr;
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void ShowKeepResultUI(bool bCaught, int32 MoneyChanged);
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void ShowOperationDoneUI();
 };
 

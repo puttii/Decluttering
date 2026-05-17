@@ -37,4 +37,5 @@ public:
 
 	TWeakObjectPtr<AItemsBase> ThisActor;
 	TWeakObjectPtr<AItemsBase> LastActor;
+	
 };

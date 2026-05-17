@@ -9,18 +9,18 @@
 UENUM(BlueprintType)
 enum class EItemAction : uint8
 {
-	Sort,    // 整理
-	Drop,   // 丢掉
-	Keep    // 暂时保留
+	Sort UMETA(DisplayName = "整理"),
+	Drop UMETA(DisplayName = "丢弃"),
+	Keep UMETA(DisplayName = "暂时保留")
 };
 
 UENUM(BlueprintType)
 enum class EDamageLevel : uint8
 {
-	New,		//全新
-	Light,		//轻度损坏
-	Medium,		//中度损坏
-	Heavy		//重度损坏
+	New UMETA(DisplayName = "全新"),
+	Light UMETA(DisplayName = "轻度损坏"),
+	Medium UMETA(DisplayName = "中度损坏"),
+	Heavy UMETA(DisplayName = "重度损坏")
 };
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(
@@ -30,9 +30,16 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(
 );
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(
-	FOnStealResult,
+	FOnKeepResult,
 	AItemsBase*, Item,
 	bool, bCaught,
+	int32, MoneyChanged
+);
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(
+	FOnSortOrDropResult,
+	AItemsBase*, Item,
+	bool, bWasCorrect, 
 	int32, MoneyChanged
 );
 
@@ -92,18 +99,24 @@ public:
 	UPROPERTY(BlueprintReadOnly, Category = "Item State")
 	bool bWasStolen = false;
 	
-
-	// 偷拿结果事件
+	// Keep 结果事件, bCaught = 是否被发现
+	// MoneyChanged = 成功时 +ItemValue，失败时 -ItemValue
 	UPROPERTY(BlueprintAssignable, Category = "Item Event")
-	FOnStealResult OnStealResult;
+	FOnKeepResult OnKeepResult;
+	// 整理委托
+	UPROPERTY(BlueprintAssignable, Category = "Item Event")
+	FOnSortOrDropResult OnSortResult;
+	// 丢弃委托
+	UPROPERTY(BlueprintAssignable, Category = "Item Event")
+	FOnSortOrDropResult OnDropResult;
 
 	// 玩家点击物品时调用
 	UFUNCTION(BlueprintCallable, Category = "Item")
 	void Interact();
 
 	// 玩家选择 清理 / 保留 / 拿走
-	/*UFUNCTION(BlueprintCallable, Category = "Item")
-	void ProcessItem(EItemAction PlayerAction);*/
+	UFUNCTION(BlueprintCallable, Category = "Item")
+	void ProcessItem(EItemAction PlayerAction, float StealCaughtChance);
 
 	// 获取物品信息文本，方便 UI 显示
 	UFUNCTION(BlueprintCallable, Category = "Item")
@@ -113,12 +126,26 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Item")
 	bool CanInteract() const;
 
+	// 玩家选择是否正确
+	UFUNCTION(BlueprintCallable, Category = "Item")
+	bool IsCorrectAction(EItemAction PlayerAction) const;
+	
+	// 玩家是否选择了“暂时保留”
+	UPROPERTY(BlueprintReadOnly, Category = "Item State")
+	bool bWasKept = false;
+
+	
 	UFUNCTION(BlueprintCallable, Category = "Item")
 	int GetUpgradeItemValue(){ return UpgradeItemValue; }
 
 	UFUNCTION(BlueprintCallable, Category = "Item")
 	void ItemPickedUp(EItemAction Action);
 
-	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "Item Event")
-	FOnItemProcessed OnItemProcessed;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item Event")
+	TSubclassOf<UUserWidget> RepeatPickHintWidget;
+	
+	UFUNCTION(BlueprintCallable, Category = "Item Event")
+	void ShowRepeatPickHintUI();
+	
+	float GetStealCaughtChance();
 };

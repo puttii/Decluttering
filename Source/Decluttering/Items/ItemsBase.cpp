@@ -2,6 +2,11 @@
 
 #include "ItemsBase.h"
 
+#include "Blueprint/UserWidget.h"
+#include "Decluttering/Player/MyGameMode.h"
+#include "Engine/LevelScriptActor.h"
+#include "Kismet/GameplayStatics.h"
+
 
 AItemsBase::AItemsBase()
 {
@@ -18,7 +23,6 @@ AItemsBase::AItemsBase()
 void AItemsBase::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
 void AItemsBase::Tick(float DeltaTime)
@@ -37,72 +41,44 @@ void AItemsBase::Interact()
 	UE_LOG(LogTemp, Warning, TEXT("Clicked Item: %s"), *ItemName.ToString());
 }
 
-/*
-void AItemsBase::ProcessItem(EItemAction PlayerAction)
+void AItemsBase::ProcessItem(EItemAction PlayerAction, float StealCaughtChance)
 {
-	if (bProcessed)
+	if (!CanInteract())
 	{
+		//显示请勿重复操作UI
+		ShowRepeatPickHintUI();
 		return;
 	}
-
+	bWasCorrect = IsCorrectAction(PlayerAction);
 	bProcessed = true;
-	bWasStolen = PlayerAction == EItemAction::Steal;
-
-	if (PlayerAction == EItemAction::Steal)
+	
+	if (PlayerAction == EItemAction::Keep)
 	{
-		const float RandomValue = FMath::FRand();
-		const bool bCaught = RandomValue <= StealCaughtChance;
-
+		bWasKept = true;
+		// 暂时保留是风险行为，不算正常整理正确
+		bWasCorrect = false;
+		const bool bCaught = FMath::FRand() <= StealCaughtChance;
 		if (bCaught)
 		{
-			// 被发现：扣物品价值
-			OnStealResult.Broadcast(this, true, -ItemValue);
-
-			UE_LOG(
-				LogTemp,
-				Warning,
-				TEXT("Steal Failed! Item: %s, Lost Money: %d"),
-				*ItemName.ToString(),
-				ItemValue
-			);
+			AMyGameMode* GameMode = Cast<AMyGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+			GameMode->SetCaughtTimes(GameMode->GetCaughtTimes() + 1);
 		}
-		else
-		{
-			// 没被发现：获得物品价值
-			OnStealResult.Broadcast(this, false, ItemValue);
+		
+		const int32 MoneyChanged = bCaught ? -ItemValue : ItemValue;
 
-			UE_LOG(
-				LogTemp,
-				Warning,
-				TEXT("Steal Success! Item: %s, Earn Money: %d"),
-				*ItemName.ToString(),
-				ItemValue
-			);
-		}
-
-		// 偷拿不算正常判断正确
-		bWasCorrect = false;
+		OnKeepResult.Broadcast(this, bCaught, MoneyChanged);
 	}
-	else
+	else if (PlayerAction == EItemAction::Sort)
 	{
-		bWasCorrect = PlayerAction == CorrectAction;
 
-		UE_LOG(
-			LogTemp,
-			Warning,
-			TEXT("Item Processed: %s, Correct: %s"),
-			*ItemName.ToString(),
-			bWasCorrect ? TEXT("True") : TEXT("False")
-		);
+		OnSortResult.Broadcast(this, bWasCorrect, ItemValue);
+
 	}
-
-	OnItemProcessed.Broadcast(this, PlayerAction);
-
-	// 简单处理：处理后隐藏物品
-	SetActorHiddenInGame(true);
-	SetActorEnableCollision(false);
+	else if (PlayerAction == EItemAction::Drop)
+	{
+		OnDropResult.Broadcast(this, bWasCorrect, ItemValue);
+	}
 }
-*/
 
 FText AItemsBase::GetItemInfoText() const
 {
@@ -143,7 +119,39 @@ bool AItemsBase::CanInteract() const
 	return !bProcessed;
 }
 
+bool AItemsBase::IsCorrectAction(EItemAction PlayerAction) const
+{
+	if (PlayerAction == EItemAction::Keep)
+	{
+		return false;
+	}
+	return PlayerAction == CorrectAction;
+}
+
 void AItemsBase::ItemPickedUp(EItemAction Action)
 {
-	OnItemProcessed.Broadcast(this, Action);
+	ProcessItem(Action, GetStealCaughtChance());
+}
+
+void AItemsBase::ShowRepeatPickHintUI()
+{
+	if (!RepeatPickHintWidget)	return;
+	UUserWidget* Widget = CreateWidget(GetWorld(), RepeatPickHintWidget);
+
+	if (Widget)
+	{
+		Widget->AddToViewport();
+		// 可选：显示鼠标
+		APlayerController* PC = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+		if (PC)
+		{
+			PC->bShowMouseCursor = true;
+		}
+	}
+}
+
+float AItemsBase::GetStealCaughtChance()
+{
+	AGameModeBase* GameMode = UGameplayStatics::GetGameMode(GetWorld());
+	return Cast<AMyGameMode>(GameMode)->StealCaughtChance;
 }
