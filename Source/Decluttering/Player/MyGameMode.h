@@ -6,6 +6,14 @@
 #include "GameFramework/GameModeBase.h"
 #include "MyGameMode.generated.h"
 
+class AItemsBase;
+
+
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(
+	FOnHasUpgrade
+);
+
 /**
  * 
  */
@@ -20,9 +28,45 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Item")
 	int CaughtTimes = 0;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Item")
+	int NumsOfItems = 0;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Item")
+	TArray<AItemsBase*> UpgradeCandidates;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Item")
+	TArray<AActor*> AllItems;
+
+	UPROPERTY()
+	bool hasInitializeAllItems = false;
+
 	UFUNCTION()
 	void SetCaughtTimes(int NewCount);
 
 	UFUNCTION()
-	int GetCaughtTimes(){ return CaughtTimes; };
+	int GetCaughtTimes(){ return CaughtTimes; }
+	
+	UFUNCTION()
+	void InitializeAllItems();
+
+	UFUNCTION()
+	void InitializeGameData();
+
+	UFUNCTION()
+	bool CanEndCurrentLevel();
+
+	UFUNCTION()
+	void EndCurrentLevel();
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void ShowEndLevelUI();
+
+	UFUNCTION(BlueprintCallable)
+	void Upgrade();
+
+	UPROPERTY()
+	bool hasUpgrade = false;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnHasUpgrade OnHasUpgrade;
 };

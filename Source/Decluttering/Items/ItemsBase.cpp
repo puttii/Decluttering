@@ -51,32 +51,39 @@ void AItemsBase::ProcessItem(EItemAction PlayerAction, float StealCaughtChance)
 	}
 	bWasCorrect = IsCorrectAction(PlayerAction);
 	bProcessed = true;
-	
+	AMyGameMode* GameMode = Cast<AMyGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 	if (PlayerAction == EItemAction::Keep)
 	{
 		bWasKept = true;
 		// 暂时保留是风险行为，不算正常整理正确
 		bWasCorrect = false;
 		const bool bCaught = FMath::FRand() <= StealCaughtChance;
+		int32 MoneyChanged = 0;
 		if (bCaught)
 		{
-			AMyGameMode* GameMode = Cast<AMyGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 			GameMode->SetCaughtTimes(GameMode->GetCaughtTimes() + 1);
+			MoneyChanged = -ItemValue;
 		}
-		
-		const int32 MoneyChanged = bCaught ? -ItemValue : ItemValue;
-
+		else
+		{
+			MoneyChanged = ItemValue;
+			GameMode->UpgradeCandidates.Add(this);
+		}
 		OnKeepResult.Broadcast(this, bCaught, MoneyChanged);
 	}
 	else if (PlayerAction == EItemAction::Sort)
 	{
-
 		OnSortResult.Broadcast(this, bWasCorrect, ItemValue);
-
 	}
 	else if (PlayerAction == EItemAction::Drop)
 	{
 		OnDropResult.Broadcast(this, bWasCorrect, ItemValue);
+		GameMode->UpgradeCandidates.Add(this);
+	}
+	bool canEndLevel = GameMode->CanEndCurrentLevel();
+	if (canEndLevel)
+	{
+		GameMode->EndCurrentLevel();
 	}
 }
 

@@ -12,6 +12,7 @@
 #include "InputActionValue.h"
 #include "Items/ItemsBase.h"
 #include "Kismet/GameplayStatics.h"
+#include "Player/MyGameInstance.h"
 #include "Player/MyPlayerState.h"
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
@@ -19,10 +20,10 @@ DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 void ADeclutteringCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	MyPlayerState = Cast<AMyPlayerState>(GetPlayerState());
-	if (!MyPlayerState)
+	MyGameInstance = Cast<UMyGameInstance>(GetGameInstance());
+	if (!MyGameInstance)
 	{
-		UE_LOG(LogTemp, Error, TEXT("Player state获取失败！！！"));
+		UE_LOG(LogTemp, Error, TEXT("MyGameInstance获取失败！！！"));
 	}
 	
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AItemsBase::StaticClass(), AllItems);
@@ -103,10 +104,9 @@ void ADeclutteringCharacter::OnKeepResultCome(AItemsBase* Item, bool bCaught, in
 	Money += MoneyChanged;
 	if (bCaught)
 	{
-		int NewCredit = MyPlayerState->GetCredit() - 10;
-		MyPlayerState->SetCredit(NewCredit);
+		int NewCredit = MyGameInstance->GetCredit() - 10;
+		MyGameInstance->SetCredit(NewCredit);
 	}
-	//TODO: UI显示
 	ShowKeepResultUI(bCaught, MoneyChanged);
 }
 
@@ -119,7 +119,7 @@ void ADeclutteringCharacter::OnSortResultCome(AItemsBase* Item, bool bWasCorrect
 	}
 	else
 	{
-		Money = Money - 10 + MoneyChanged;
+		Money = Money - 10;
 	}
 }
 
@@ -132,7 +132,7 @@ void ADeclutteringCharacter::OnDropResultCome(AItemsBase* Item, bool bWasCorrect
 	}
 	else
 	{
-		Money = Money - 10 + MoneyChanged;
+		Money = Money - 10;
 	}
 }
 

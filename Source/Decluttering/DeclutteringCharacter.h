@@ -7,6 +7,7 @@
 #include "Logging/LogMacros.h"
 #include "DeclutteringCharacter.generated.h"
 
+class UMyGameInstance;
 class AMyPlayerState;
 class USpringArmComponent;
 class UCameraComponent;
@@ -51,8 +52,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Data")
 	TArray<AItemsBase*> DropAndKeep;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Data")
-	int CaughtCount = 0;
+	/*UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Data")
+	int CaughtCount = 0;*/
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Data")
 	bool hasBonus = true;
@@ -89,8 +90,8 @@ public:
 	UPROPERTY()
 	TArray<AActor*> AllItems;
 
-	UPROPERTY()
-	AMyPlayerState* MyPlayerState = nullptr;
+	UPROPERTY(BlueprintReadOnly)
+	UMyGameInstance* MyGameInstance;
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void ShowKeepResultUI(bool bCaught, int32 MoneyChanged);
