@@ -58,7 +58,7 @@ void AMyGameMode::Upgrade()
 {
 	if (hasUpgrade)
 	{
-		// TODO: UI显示无法变废为宝
+		// UI显示无法变废为宝
 		OnHasUpgrade.Broadcast();
 		return;
 	}

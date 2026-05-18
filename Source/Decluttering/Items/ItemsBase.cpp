@@ -3,6 +3,7 @@
 #include "ItemsBase.h"
 
 #include "Blueprint/UserWidget.h"
+#include "Decluttering/Player/MyGameInstance.h"
 #include "Decluttering/Player/MyGameMode.h"
 #include "Engine/LevelScriptActor.h"
 #include "Kismet/GameplayStatics.h"
@@ -51,12 +52,16 @@ void AItemsBase::ProcessItem(EItemAction PlayerAction, float StealCaughtChance)
 	}
 	bWasCorrect = IsCorrectAction(PlayerAction);
 	bProcessed = true;
+	if (!bWasCorrect)
+	{
+		UMyGameInstance* MyGameInstance = Cast<UMyGameInstance>(GetGameInstance());
+		MyGameInstance->hasBonus = false;
+	}
 	AMyGameMode* GameMode = Cast<AMyGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 	if (PlayerAction == EItemAction::Keep)
 	{
 		bWasKept = true;
-		// 暂时保留是风险行为，不算正常整理正确
-		bWasCorrect = false;
+
 		const bool bCaught = FMath::FRand() <= StealCaughtChance;
 		int32 MoneyChanged = 0;
 		if (bCaught)

@@ -52,12 +52,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Data")
 	TArray<AItemsBase*> DropAndKeep;
 
-	/*UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Data")
-	int CaughtCount = 0;*/
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Data")
-	bool hasBonus = true;
-
 	// 有没有自己保留的东西
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Data")
 	bool hasKeep = false;

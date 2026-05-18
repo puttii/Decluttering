@@ -20,6 +20,12 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Data")
 	int Credit = 100;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Data")
+	int Bonus = 50;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Data")
+	bool hasBonus = true;
+
 	void SetCredit(int InCredit){ Credit = InCredit; };
 	int GetCredit(){ return Credit; };
 

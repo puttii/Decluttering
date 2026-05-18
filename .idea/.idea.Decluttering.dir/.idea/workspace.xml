@@ -9,17 +9,15 @@
   <component name="ChangeListManager">
     <list default="true" id="7400bfe0-e1c3-4a24-a709-b142f9b09fab" name="更改" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Decluttering.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Decluttering.dir/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Rooms/Room_Bedroom.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Rooms/Room_Bedroom.umap" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Rooms/Room_Kitchen.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Rooms/Room_Kitchen.umap" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Rooms/Room_Reading.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Rooms/Room_Reading.umap" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Decluttering/DeclutteringCharacter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Decluttering/DeclutteringCharacter.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Game/BP_GameMode.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Game/BP_GameMode.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/ThirdPerson/Blueprints/BP_ThirdPersonCharacter.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/ThirdPerson/Blueprints/BP_ThirdPersonCharacter.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/UI/WBP_Caught.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/UI/WBP_Caught.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/UI/WBP_Description.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/UI/WBP_Description.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/UI/WBP_NotCaught.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/UI/WBP_NotCaught.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/Decluttering/DeclutteringCharacter.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Decluttering/DeclutteringCharacter.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/Decluttering/Items/ItemsBase.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Decluttering/Items/ItemsBase.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Decluttering/Items/ItemsBase.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Decluttering/Items/ItemsBase.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Decluttering/Player/MyGameMode.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Decluttering/Player/MyGameMode.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Decluttering/Player/MyPlayerController.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Decluttering/Player/MyPlayerController.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Decluttering/Player/MyPlayerController.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Decluttering/Player/MyPlayerController.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Decluttering/Player/MyPlayerState.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Decluttering/Player/MyPlayerState.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Decluttering/Player/MyGameInstance.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Decluttering/Player/MyGameInstance.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Decluttering/Player/MyGameMode.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Decluttering/Player/MyGameMode.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,10 +43,13 @@
   }
 }</component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="cidr-memory-view://9" root0="FORCE_HIGHLIGHTING" />
+    <setting file="cidr-memory-view://2" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../Epic Games/UE_5.5/Engine/Source/Runtime/SlateCore/Public/Layout/Margin.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../Epic Games/UE_5.5/Engine/Source/Runtime/UMG/Public/Blueprint/UserWidget.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/Decluttering/Items/ItemsBase.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/Decluttering/Items/ItemsBase.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/Decluttering/Player/MyGameInstance.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/Decluttering/Player/MyGameInstance.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/Decluttering/Player/MyGameMode.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/Decluttering/Player/MyGameMode.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/Decluttering/Player/MyPlayerController.cpp" root0="FORCE_HIGHLIGHTING" />
@@ -170,6 +171,8 @@
       <workItem from="1778680190036" duration="5646000" />
       <workItem from="1778905370319" duration="5370000" />
       <workItem from="1778911766477" duration="24327000" />
+      <workItem from="1778991058608" duration="27807000" />
+      <workItem from="1779086891579" duration="6912000" />
     </task>
     <servers />
   </component>
