@@ -9,15 +9,14 @@
   <component name="ChangeListManager">
     <list default="true" id="7400bfe0-e1c3-4a24-a709-b142f9b09fab" name="更改" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Decluttering.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Decluttering.dir/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Config/DefaultEditor.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Config/DefaultEditor.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Config/DefaultEngine.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Config/DefaultEngine.ini" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/Game/BP_GameMode.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Game/BP_GameMode.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/ThirdPerson/Blueprints/BP_ThirdPersonCharacter.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/ThirdPerson/Blueprints/BP_ThirdPersonCharacter.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/UI/WBP_Caught.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/UI/WBP_Caught.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/UI/WBP_Description.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/UI/WBP_Description.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/UI/WBP_NotCaught.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/UI/WBP_NotCaught.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Decluttering/DeclutteringCharacter.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Decluttering/DeclutteringCharacter.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Decluttering/Items/ItemsBase.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Decluttering/Items/ItemsBase.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Decluttering/Player/MyGameInstance.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Decluttering/Player/MyGameInstance.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Decluttering/Player/MyGameMode.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Decluttering/Player/MyGameMode.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Rooms/Room4.umap" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Rooms/Room5.umap" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Rooms/Room_1.umap" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Rooms/Room_2.umap" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Rooms/Room_3.umap" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,7 +42,9 @@
   }
 }</component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="cidr-memory-view://2" root0="FORCE_HIGHLIGHTING" />
+    <setting file="cidr-memory-view://0" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../Epic Games/UE_5.5/Engine/Source/Runtime/Engine/Private/UnrealEngine.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../Epic Games/UE_5.5/Engine/Source/Runtime/Engine/Private/World.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../Epic Games/UE_5.5/Engine/Source/Runtime/SlateCore/Public/Layout/Margin.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../Epic Games/UE_5.5/Engine/Source/Runtime/UMG/Public/Blueprint/UserWidget.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/Decluttering/Items/ItemsBase.cpp" root0="FORCE_HIGHLIGHTING" />
@@ -173,6 +174,9 @@
       <workItem from="1778911766477" duration="24327000" />
       <workItem from="1778991058608" duration="27807000" />
       <workItem from="1779086891579" duration="6912000" />
+      <workItem from="1779452569508" duration="362000" />
+      <workItem from="1779453058888" duration="3782000" />
+      <workItem from="1779459445841" duration="1562000" />
     </task>
     <servers />
   </component>
